@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import store from 'services/store'
 
 import IndexPage from 'pages/index'
+import ResultPage from 'pages/result'
 import AshPage from 'pages/ash'
 import ManduPage from 'pages/mandu'
 
@@ -19,25 +20,12 @@ export default function App() {
       <GlobalStyled />
       <Provider store={store}>
         <Router>
-          <div>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/ash">Ash</Link>
-              </li>
-              <li>
-                <Link to="/mandu">Mandu</Link>
-              </li>
-            </ul>
-
-            <Switch>
-              <Route exact path="/" component={IndexPage} />
-              <Route exact path="/ash" component={AshPage} />
-              <Route exact path="/mandu" component={ManduPage} />
-            </Switch>
-          </div>
+          <Switch>
+            <Route exact path="/" component={IndexPage} />
+            <Route exact path="/result" component={ResultPage} />
+            <Route exact path="/ash" component={AshPage} />
+            <Route exact path="/mandu" component={ManduPage} />
+          </Switch>
         </Router>
       </Provider>
     </>

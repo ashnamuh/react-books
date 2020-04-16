@@ -9,17 +9,23 @@ export interface BookState {
     data: Book[];
     loading: boolean;
     totalItemsLength?: number;
+    currentIndex: number;
   };
 }
 
 const initialState: BookState = {
   books: {
     data: [],
-    loading: false
+    loading: false,
+    currentIndex: 0
   }
 }
 
 export default createReducer<BookState, Actions>(initialState)
   .handleAction(actions.fetchBookListAsync.request, (state) => ({ ...state,  books: { ...state.books, loading: true } }))
-  .handleAction(actions.fetchBookListAsync.success, (state, action) => ({ ...state,  books: { data: action.payload.books, totalItemsLength: action.payload.totalItemsLength, loading: false } }))
+  .handleAction(actions.fetchBookListAsync.success, (state, action) => {
+    const booksData = [...state.books.data, ...action.payload.books]
+
+    return { ...state,  books: { data: booksData, totalItemsLength: action.payload.totalItemsLength, loading: false, currentIndex: booksData.length } }
+  })
   .handleAction(actions.fetchBookListAsync.failure, (state) => ({ ...state,  books: { ...state.books, loading: false } }))
