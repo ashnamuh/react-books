@@ -7,6 +7,7 @@ import * as bookActions from 'services/book/actions'
 import URLSearchParams from '@ungap/url-search-params'
 import SearchInput from 'components/input/Search'
 import * as colors from 'styles/colors'
+import { SearchOptions, OrderType } from 'types/common'
 
 import BookArticle from 'components/BookArticle'
 import InfiniteScroll from 'components/InfiniteScroll'
@@ -59,11 +60,22 @@ export default function ResultPage() {
     setMounted(true)
   }, [urlParams, query, history])
 
+  const searchOptions = React.useMemo(() => {
+    const options: SearchOptions = {}
+    if (urlParams.get('orderBy')) {
+      options.orderBy = urlParams.get('orderBy') as OrderType
+    }
+    if (urlParams.get('ebookOnly')) {
+      options.ebookOnly = true
+    }
+    return options
+  }, [urlParams])
+
   React.useEffect(() => {
     if (!booksLoading && query && (!mounted || loadMore)) {
-      dispatch(bookActions.fetchBookListAsync.request({ query }))
+      dispatch(bookActions.fetchBookListAsync.request({ query, options: searchOptions }))
     }
-  }, [dispatch, urlParams, mounted, query, loadMore, booksLoading])
+  }, [dispatch, urlParams, mounted, query, loadMore, booksLoading, searchOptions])
 
   const handleLoadMore = () => {
     if (!booksLoading) {

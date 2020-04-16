@@ -3,6 +3,10 @@ import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import * as colors from 'styles/colors'
 import SearchInput from 'components/input/Search'
+import Checkbox from 'components/input/Checkbox'
+import Radio from 'components/input/Radio'
+import { OrderType } from 'types/common'
+import URLSearchParams from '@ungap/url-search-params'
 
 const S = {
   Container: styled.div`
@@ -34,35 +38,23 @@ const S = {
     border-radius: 12px;
     padding: 16px;
   `,
-  Input: styled.label`
-    border: 1px solid #a3aab3;
-    display: inline-block;
-    width: 100%;
-    position: relative;
-    padding: 2px 40px 2px 4px;
-    box-sizing: border-box;
-    input {
-      font-size: 22px;
-      width: 100%;
-    }
-    button {
-      position: absolute;
-      right: 6px;
-      width: 25px;
-      height: 25px;
-      cursor: pointer;
-    }
-  `
 }
 
 export default function IndexPage() {
   const history = useHistory()
 
   const [searchQuery, setSearchQuery] = React.useState<string>('')
+  const [orderBy, setOrderBy] = React.useState<OrderType>('relevance')
+  const [ebookOnly, setEbookOnly] = React.useState<boolean>(false)
 
   const handleSearch = () => {
-    console.log(searchQuery)
-    history.push(`/result?q=${searchQuery}`)
+    const searchParams = new URLSearchParams()
+    searchParams.set('q', searchQuery)
+    searchParams.set('orderBy', orderBy)
+    if (ebookOnly) {
+      searchParams.set('ebookOnly', 'true')
+    }
+    history.push(`/result?${searchParams.toString()}`)
   }
 
   return (
@@ -76,6 +68,17 @@ export default function IndexPage() {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)}
             placeholder="책의 제목, 작가 또는 출판사" onSearch={handleSearch}
           />
+          <Radio value="relevance" checked={orderBy === 'relevance'}
+            label="관련도순"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setOrderBy(event.target.value as OrderType)} />
+          <Radio value="newest" checked={orderBy === 'newest'}
+            label="최신순"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setOrderBy(event.target.value as OrderType)} />
+          <br />
+
+          <Checkbox checked={ebookOnly}
+            label="eBook만"
+            onChange={() => setEbookOnly(!ebookOnly)} />
         </S.Form>
       </S.FormWrap>
     </S.Container>
