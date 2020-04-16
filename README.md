@@ -1,6 +1,8 @@
-# react-redux-saga-typescript-boilerplate
+# react-books
 
-A boilerplate for React, Redux and Typescript
+An example project of searching books
+
+The project is based on [react-redux-saga-typescript-boilerplate](https://github.com/ashnamuh/react-redux-saga-typescript-boilerplate) of ashnamuh
 
 ### Environment configurations
 #### System requirements
