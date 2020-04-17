@@ -1,18 +1,14 @@
 import { combineReducers, applyMiddleware, createStore, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
-import ArticleService, { ArticleState } from './article/reducers'
-import ArticleSaga from './article/sagas'
 import BookService, { BookState } from './book/reducers'
 import BookSaga from './book/sagas'
 
 export interface RootState {
-  articleState: ArticleState;
   bookState: BookState;
 }
 
 const rootReducer = combineReducers({
-  articleState: ArticleService,
   bookState: BookService
 })
 
@@ -34,7 +30,6 @@ const store = createStore(
   composeEnhancer(applyMiddleware(sagaMiddleware)),
 )
 
-sagaMiddleware.run(ArticleSaga)
 sagaMiddleware.run(BookSaga)
 
 export default store
