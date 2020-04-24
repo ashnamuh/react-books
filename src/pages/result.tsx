@@ -72,10 +72,10 @@ export default function ResultPage() {
   }, [urlParams])
 
   React.useEffect(() => {
-    if (!booksLoading && query && (!mounted || loadMore)) {
+    if (query && (!mounted || loadMore)) {
       dispatch(bookActions.fetchBookListAsync.request({ query, options: searchOptions }))
     }
-  }, [dispatch, urlParams, mounted, query, loadMore, booksLoading, searchOptions])
+  }, [dispatch, urlParams, mounted, query, loadMore, searchOptions])
 
   const handleLoadMore = () => {
     if (!booksLoading) {

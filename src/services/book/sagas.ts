@@ -1,10 +1,11 @@
-import { put, all, takeEvery, call, select } from 'redux-saga/effects'
+import { put, all, call, select, takeLatest, delay } from 'redux-saga/effects'
 import { ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import * as requests from './requests'
 import * as selectors from './selectors'
 
 export function* fetchArticleListSaga(action: ActionType<typeof actions.fetchBookListAsync.request>) {
+  yield delay(1000)
   const startIndex = yield select(selectors.getCurrentIndex)
   try {
     const data = yield call(requests.fetchBooks, action.payload.query, { ...action.payload.options, startIndex })
@@ -16,6 +17,6 @@ export function* fetchArticleListSaga(action: ActionType<typeof actions.fetchBoo
 
 export default function * () {
   yield all([
-    takeEvery(actions.fetchBookListAsync.request, fetchArticleListSaga),
+    takeLatest(actions.fetchBookListAsync.request, fetchArticleListSaga),
   ])
 }
