@@ -21,7 +21,7 @@ export default function InfiniteScroll({ handler }: Props) {
     }
 
     return () => {
-      ref.current?.removeEventListener('input', scrollHandler) // eslint-disable-line
+      window.removeEventListener('scroll', scrollHandler) // eslint-disable-line
     }
   }, [ref, handler])
 
